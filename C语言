@@ -1,1 +1,114 @@
-10.1更
+#define _CRT_SECURE_NO_WARNINGS 1
+//主函数main
+//C语言是从主函数main第一行开始执行的
+//所以C语言代码中得(dei)有main函数-入口
+
+//printf - 库函数 - 在屏幕上打印信息
+//printf 的使用,也得打招呼(引用头文件 stdio.h)
+
+//一个工程中有且仅有一个main函数
+//一个工程中可以有多个.c文件
+//但一个.c文件中只能有一个main函数
+#include <stdio.h>
+
+//int main()
+//{
+//	printf("你好世界\n");// \n换行
+//	return 0;
+//}
+
+//数据类型=========================================
+// char      字符数据类型
+// short     短整型
+// int       整型
+// long      长整型
+// long long 更长整型
+// float     单精度浮点数
+// double    双精度浮点数
+// 
+//计算机语言 - 写程序 - 解决生活中问题
+//必须有能力来描述生活中问题!
+//比如：steam - 游戏， 价格 - 23.3 - 小数 2.33*1^1
+//年龄 - 50
+//C语言 - 浮点数
+//      - 整型
+
+//a
+//"a" - 字符a
+
+//int main()
+//{   //字符类型
+//	char ch = "a";//ch 是存放a的
+//	//整型
+//	int age = 20;//age是存放20的
+//	//短整型
+//	short unm = 10;
+//	//长整型
+//	long long zx = 100;
+//	//单精度
+//	float weight = 66.6;
+//	//双精度
+//	double zc = 25.5
+//	 return 0;
+//}
+
+//看每种数据类型大小====
+//int main()
+//{
+//	//printf("你好世界\n");
+//	//printf("%d\n", 100);//打印一个整数 - %d
+//	//sizeof - 关键字 - 操作符 - 计算类型或者变量所占空间的大小 - 大小是字节
+//	printf("%d\n", sizeof(char));
+//	printf("%d\n", sizeof(short));
+//	printf("%d\n", sizeof(int));
+//	printf("%d\n", sizeof(long));
+//	printf("%d\n", sizeof(long long));
+//	printf("%d\n", sizeof(float));
+//	printf("%d\n", sizeof(double));
+//
+//	return 0;
+//}
+
+//变量与常量=======================
+//int main()
+//{
+//	//创建个变量
+//	short age = 20;//short类型  age变量的名字 = 20；推荐
+//	float weight = 75.3;//weight=体重
+//	
+//	age = age + 1;
+//	weight = weight - 10;
+//	printf("%d\n", age);
+//	printf("%f\n", weight);
+//
+//	return 0;
+//}
+
+//局部变量与全局变量===
+//大括号外叫全局变量
+//int a = 100;
+//
+//int main()
+//{
+//	//大括号内叫局部变量
+//	//当局部变量与全局变量名字冲突时，局部优先。
+//	//不建议名字写一样
+//	int a = 10;
+//	printf("%d\n", a);
+//
+//	return 0;
+//}
+
+//写求和================
+//scanf函数是输入函数,我要把数据存放到那里去比如:%d存放到&a中,&是地址
+int main()
+{
+	int a = 0;
+	int b = 0;
+	int sum = 0;
+	scanf("%d %d", &a, &b);//可以在写%d的时候不用空格，但是在输入时候别按空格
+	sum = a + b;
+	printf("sum = %d\n", sum);
+
+	return 0;
+}
