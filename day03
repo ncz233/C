@@ -147,7 +147,10 @@ int main()
 
 //C语言常见关键字==================
 // auto是自动的 - 每个局部变量都是auto修饰的， break在循环和switch语句里 case在switch case语句， const修饰常变量， continue继续， default默认用switch case语句里，
-// do用在do...while循环， else 什么语句， enum枚举类型， extern声明外部符号的， for循环语句， goto语句， if语句， register寄存器关键字
+// do用在do...while循环， else 什么语句， enum枚举类型， extern声明外部符号的， for循环语句， goto语句， if语句， register寄存器关键字， return返回值要跟前面的数据类型呼应起来
+// signed有符号的 10 -20， unsigned无符号的 没符号位概念的，sizeof求大小， static静态的， struct结构体， switch语句， typedef类型定义， union联合体(共用体)
+// void无或空， volatileC语言段位， while循环语句
+// define - 不是关键字 - 预处理指令   include - 不是关键字 - 预处理指令
 //1.C语言提供的，不能自己创建关键字
 //2.变量名不能是关键字
 
@@ -168,7 +171,10 @@ int main()
 //register语句
 int main()
 {
+	//大量/频繁被使用的数据，想放在寄存器中，提升效率
+	//编译器是非常聪明的register意义也不大
 	register int num = 100;//建议num的值放在寄存器中，让编译器做决定放不放
 	//计算机数据存的地方：内存8-16G，高速缓存几十MB，硬盘500G，寄存器更小
+
 	return 0;
 }
