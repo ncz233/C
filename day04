@@ -1,0 +1,332 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include <stdio.h>
+
+//分支语句和循环语句
+// C语言是如何表示真假：0为假，非0为真。
+// 语句是：一个分号隔开的叫语句
+//C语言是结构化的程序设计语言
+//顺序结构：从头走到尾
+//选择结构：分支语句(二选一或多选一)
+// if
+// switch
+//循环结构：循环结构
+//while
+// for
+// do...while
+//goto语句
+
+//语句
+//int main()
+//{
+//	printf("holle");//一个语句
+//	3 + 5;//一个语句
+//	;//空语句
+//
+//	return 0;
+//}
+
+//选择语句===============
+//输入数字看多少在那个阶段 
+//int main()
+//{
+//	int a = 0;
+//	printf("你几岁\n");
+//	scanf("%d", &a);
+//
+//	if (a < 18)
+//	{
+//		printf("少年\n");
+//	}
+//	//else if (18 <= a < 26)//错误的语句，语法上没错，逻辑上错了。C语言会从上到下计算，先计算18<=a，然后为真是1，然后1<26
+//	//{
+//	//	printf("青年\n");
+//	//}
+//	//else if (18 <= a && a < 26)//可以写成else if (a<26)
+//	{
+//		printf("青年\n");
+//	}
+//	else if (26 <= a && a < 40)
+//	{
+//		printf("中年\n");
+//	}
+//	else if (40 <= a && a < 60)
+//	{
+//		printf("壮年\n");
+//	}
+//	else if (60 <= a && a < 100)
+//	{
+//		printf("老年\n");
+//	}
+//	else
+//	{
+//		printf("老不死");
+//	}
+//
+//	//int a = 0;
+//	//printf("你几岁\n");
+//	//scanf("%d", &a);
+//
+//	//if (a >= 18)
+//	//{
+//	//	printf("成年\n");
+//	//}
+//	//else if (a == 0)
+//	//{
+//	//	printf("受精卵");
+//	//}
+//	//else
+//	//{
+//	//	printf("未成年\n");
+//	//	printf("不能谈恋爱\n");
+//	//}//如果想控制多条语句请带上大括号
+//	////大括号是 一个人代码块 一个人逻辑
+//	
+//	return 0;
+//}
+
+//悬空else,表达了代码的书写风格非常重要
+//int main()
+//{
+//	int a = 0;
+//	int b = 2;
+//	if (a == 1)
+//	{
+//		if (b == 2)//最好写成if（2 == b），因为这样可以知道哪里错了（有时候会写成b = 2，这样代码会跑起来但是是错的）
+//		{
+//			printf("22");
+//		}
+//		else//什么都不会打印，原因else和离自己最近的if函数匹配。而if（a==1）是假的所以下面的内容会不打印
+//		{
+//			printf("33");
+//		}
+//	}
+//	return 0;
+//}
+
+//练习
+//判断是基数吗
+//int main()
+//{
+//	int a = 0;
+//	printf("输入数字判断是基数\n");
+//	scanf("%d", &a);
+//	
+//	if (1 == a%2)
+//	{
+//		printf("对了");
+//	}
+//	else
+//	{
+//		printf("不是");
+//	}
+//	return 0;
+//}
+
+//打印100以内的基数
+//int main()
+//{
+//	int a = 0;
+//	/*for ( 1 == a; a < 100; a++)
+//	{
+//		if (1 == a % 2)
+//		{
+//			printf("%d\n",a);
+//		}
+//	}*/
+//	/*while (100 >= a )//记住循环打印是一个集体，分开不行
+//	{
+//		if(1 == a % 2)
+//		{
+//			printf("%d\n", a);
+//		}
+//		a++;
+//	}*/
+//	/*for ( 1 == a; a < 100; a += 2)
+//	{
+//		
+//			printf("%d\n",a);
+//	}*/
+//
+//	return 0;
+//}
+
+//switch语句
+//输入1打印周一，输入2打印周二，，，，
+//int main()
+//{
+//	int a = 0;
+//	//float a = 0;
+//	int b = 2;
+//	scanf("%d", &a);
+//	switch (a)//a是整型常量表达式，也必须是整型
+//	{
+//	case 1://case是语句向是入口。a输出是几打印哪个语句。打印哪个语句就看入口是表达式和case的值
+//		printf("周一\n");
+//		break;//跳出，停止的意思。没有它将不会停止，break是出口
+//	case 2://case后面必须是常量值，可以写成1+1之类的
+//		printf("周2\n");
+//		break;
+//	case 3://case后面必须是常量值,可以写成'c'字符类的，因为内存用的是字符的asccm值
+//		printf("周3\n");
+//		break;
+//	case 4:
+//		printf("周4\n");
+//		break;
+//	case 5:
+//		printf("周5\n");
+//		break;
+//	case 6:
+//		printf("周6\n");
+//		break;
+//	case 7:
+//		printf("周7\n");
+//		break;
+//	}
+//
+//	return 0;
+//}
+
+//输入1-5 工作日
+//输入6-7 休息日
+//
+//int main()
+//{
+//	int a = 0;
+//	scanf("%d", &a);
+//	switch (a)//只要是满足我的需求，顺序无所谓
+//	{
+//	case 6:
+//	case 7:
+//		printf("休息日\n");
+//		break;//break的语句实际效果是吧语句列表划分不同的部分，最后的可以不加，但是要养成良好的习惯，加上去。
+//	case 1:
+//		
+//	case 2:
+//		
+//	case 3:
+//		
+//	case 4:
+//	case 5:
+//		printf("工作日\n");
+//		break;
+//	
+//	default://默认的 如果输入的不是前面的值会没有显示，加上default会显示前面没加的提示他输入错误
+//		printf("输入错误\n");
+//		break;
+//		case 8:
+//			switch (a)
+//			{
+//			case 8:
+//				printf("可以嵌套");
+//				break;//这里的break是嵌套中的，意思是在嵌套中中断，不是主体！
+//			}
+//		break;
+//	}
+//
+//	return 0;
+//}
+
+//练习
+
+//int mian()
+//{
+//	int n = 1;
+//	int m = 2;
+//	switch (n)
+//	{
+//	case 1:
+//		n++;
+//	case 2:
+//		m++;
+//	case 3:
+//		switch (n)
+//		{
+//		case 1:
+//			n++;
+//		case 2:
+//			n++;
+//			m++;
+//			break;
+//		}
+//	case 4:
+//		m++;
+//		break;
+//	default:
+//		break;
+//	}
+//	printf("n = %d, m = %d\n", n, m);
+//
+//	return 0;
+//}
+
+//循环语句
+//while
+// //for
+//do...while
+
+//while和if有点像
+//int main()
+//{
+//	while (1)//表达式，非0执行循环，0循环停止跳出。
+//	{
+//		printf("holle");
+//	}
+//	return 0;
+//}
+
+//在while循环中，break用于永久的终止循环
+//int main()
+//{
+//	int a = 1;
+//	while (10>=a)
+//	{
+//		if ( 5 == a)
+//		{
+//			break;
+//		}
+//		printf("%d ", a);
+//		a++;
+//	}
+//	return 0;
+//}
+
+//在while循环中，continue的作用跳过本次循环continue后边的代码，直接去判断部分，看是否进行下一次循环
+//int main()
+//{
+//	int a = 1;
+//	while (10 >= a)
+//	{
+//		if (5 == a)
+//		{
+//			continue;//死循环，5没加上.
+//		}
+//		printf("%d ", a);
+//		a++;
+//	}
+//	return 0;
+//}
+
+//getchar读取键盘上一枚字符，putchar(ch);输出一个字符
+//int main()
+//{
+//	//getchr读取键盘上一枚字符,你输入什么他就是什么
+//	int ch = getchar();
+//	//printf("%c\n", ch);
+//	putchar(ch);//输出一个字符
+//	return 0;
+//}
+
+//练习
+int main()
+{
+	//getchr：getchar和键盘之间有缓冲区，你输入了什么，他就会存什么。EOF - end of file - 文件结束标志
+	int ch = 0;
+	//按下ctrl + z = getchar 就读取到EOF就结束了
+	while ((ch = getchar()) != EOF)//getchar获取到一个字符放到ch中，如果他这个字符不等于EOF的说明不是遇到结束了错误了，他就是正常读取这个字符
+	{
+		putchar(ch);
+	}
+
+	return 0;
+}
