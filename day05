@@ -343,9 +343,73 @@
 //		猜错了，告诉你猜大还是小，直到猜对为止
 // 游戏可以一直玩
 //
+#include <stdlib.h>
+#include <time.h>
+void caidan()
+{
+	printf("####################\n");
+	printf("#####1:开始游戏#####\n");
+	printf("#####0:退出游戏#####\n");
+	printf("####################\n");
+}
+
+void game()
+{
+	//猜数字
+	//随机生成1-100
+	//rand返回数值 0 - 32767之间的数字
+	//时间 - 时间戳
+	//srand((unsigned int)time(NULL));//srand设置一个随机的起点需要括号里面的值发生变化才能有随机数。time是时间戳是有参数的，NULL是空值：不想用它的参数，time返回类型是time_t的。但是我们需要的是srand的的值所以要强制转换成unsigned int形式就可以了。
+	int b = rand() % 100 + 1;//rand无参数返回类型是整型，生成随机数字，但是第二次打开生成的随机数和第一次打开是一样的，不够随机。在调用rand还要sranf函数来设置随机数生成器
+	//printf("%d", b);
+
+	//猜数字
+	int c = 0;
+	while (1)
+	{
+		printf("请猜数字\n");
+		scanf("%d", &c);
+		if (c>b)
+		{
+			printf("大了\n");
+
+		}
+		else if (c<b)
+		{
+			printf("小了\n");
+		}
+		else
+		{
+			printf("对了\n");
+			break;
+		}
+	}
+}
+
 int main()
 {
+	int a = 0;
+	srand((unsigned int)time(NULL));
+	do
+	{
+		caidan();
+		printf("请输入");
+		scanf("%d", &a);
+		switch (a)
+		{
+		case 1:
+			printf("开始游戏\n");
+			game();
+			break;
+		case 0:
+			printf("退出游戏\n");
+			break;
+		default:
+			printf("请重新输入\n");
+			break;
+		}
 
+	} while (a);
 
 	return 0;
 }
