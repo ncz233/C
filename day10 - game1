@@ -1,0 +1,300 @@
+game.h 头文件
+
+#pragma once
+//游戏相关函数声明，符号声明头文件的包含
+
+#include <stdio.h>//头文件的包含
+#include <stdlib.h>
+#include <time.h>
+
+
+#define ROW 3
+#define COL 3
+
+//函数的声明
+//初始化化棋盘的内容
+void initboard(char board[ROW][COL], int row, int col);//board传过来是char board[3][3]是数组，int row, int col才是行和列
+
+//打印棋盘的函数
+void displayboard(char board[ROW][COL], int row, int col);//同上
+
+//玩家下棋
+void palyermove(char board[][COL], int row, int col);//可以不写char board[ROW][COL]的ROW，因为二维数组的行可以省略
+
+//电脑
+void computermove(char board[][COL], int row, int col);
+
+//玩家 - O
+//电脑 - X
+//平局 - q
+//继续 - c
+//
+char iswin(char board[][COL], int row, int col);
+
+==============================================================================================================================
+
+game.h 游戏相关函数的实现
+
+#define _CRT_SECURE_NO_WARNINGS 1
+//游戏相关函数的实现
+#include "game.h"
+
+void initboard(char board[ROW][COL], int row, int col)
+{
+	int i = 0;
+	int j = 0;
+	for ( i = 0; i < row; i++)//行
+	{
+		for (j = 0; j < col; j++)//列
+		{
+			board[i][j] = ' ';
+		}
+	}
+}
+
+//void displayboard(char board[ROW][COL], int row, int col)
+//{
+//	int i = 0;
+//	for ( i = 0; i < row; i++)
+//	{
+//		printf("%c  | %c | %c \n", board[i][0], board[i][1], board[i][2]);
+//		if (row-1 > i)
+//		{
+//			printf("---|---|---\n");
+//		}
+//		
+//	}
+//}
+
+void displayboard(char board[ROW][COL], int row, int col)
+{
+	int i = 0;
+	for ( i = 0; i < row; i++)
+	{
+		int j = 0;
+		for ( j = 0; j < col; j++)
+		{
+			printf(" %c ", board[i][j]);
+			if (col-1 > j)
+			{
+				printf("|");
+			}
+		}
+		printf("\n");
+		if (row-1 > i)
+		{
+			int a = 0;
+			for ( a = 0; a < row; a++)
+			{
+				printf("---");
+				if (a < col-1)
+				{
+					printf("|");
+				}
+			}
+		}printf("\n");
+		
+	}
+}
+
+void palyermove(char board[][COL], int row, int col)
+{
+	int x = 0;
+	int y = 0;
+
+	printf("玩家走>\n");
+	while (1)
+	{
+		printf("请输入坐标\n");
+		scanf("%d %d", &x, &y);
+		//判断坐标合法性
+		if (1 <= x && row >= x && 1 <= y && col >= y)
+		{
+			//下棋
+			//坐标是否被占用
+			if (board[x - 1][y - 1] == ' ')
+			{
+				board[x - 1][y - 1] = 'O';
+				break;
+			}
+			else
+			{
+				printf("坐标被占用,请重新输入\n");
+			}
+		}
+		else
+		{
+			printf("坐标错误，重新输入\n");
+		}
+	}
+}
+
+void computermove(char board[][COL], int row, int col)
+{
+	printf("电脑走\n");
+	while (1)
+	{
+		int  x = rand() % row;
+		int y = rand() % col;
+		//不用判断合法性，因为%row或%col，只有0 - 2
+		//判断占用
+		if (board[x][y] == ' ')
+		{
+			board[x][y] = 'X';
+			break;
+		}
+	}
+
+}
+
+int isfull(char board[][COL], int row, int col)
+{
+	int i = 0;
+	
+	for ( i = 0; i < row; i++)
+	{
+		int j = 0;
+		for ( j = 0; j < col; j++)
+		{
+			if (board[i][j] == ' ')
+			{
+				return 0;//棋盘没满
+			}
+		}
+	}
+	return 1;//棋盘满了
+}
+
+char iswin(char board[][COL], int row, int col)
+{
+	int i = 0;
+	//判断3行
+	for ( i = 0; i < row; i++)
+	{
+		if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][0] != ' ')
+		{
+			return board[i][0];
+		}
+		
+	}
+
+	//判断3列
+	for ( i = 0; i < col; i++)
+	{
+		if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] != ' ')
+		{
+			return board[0][i];
+		}
+	}
+
+	//判断对角线
+	if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != ' ')
+	{
+		return board[0][0];
+	}
+	else if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != ' ')
+	{
+		return board[0][2];
+	}
+
+	//判断平局
+	//满了返回1，不满返回0
+	int ret = isfull(board, row, col);//因为实在这个内部所以不需要写char board[][COL], int row, int col。
+	if (ret == 1)
+	{
+		return 'q';
+	}
+
+	//继续
+	return 'c';
+}
+
+=================================================================================================================
+
+test.h 测试代码
+
+#define _CRT_SECURE_NO_WARNINGS 1
+//测试代码
+
+#include "game.h"
+
+void menu()
+{
+	printf("####################\n");
+	printf("#####1.开始游戏#####\n");
+	printf("#####0.退出游戏#####\n");
+	printf("####################\n");
+}
+
+void game()
+{
+	//存储数据 - 二维数组
+	char board[ROW][COL] ;
+	//初始化棋盘里的内容 - 初始化为空格
+	initboard(board, ROW, COL);//board的数传过去了，但是它不知道有几行几列，所以传过去 ROW COL
+	//打印一下棋盘 - 本质是打印数组的内容
+	displayboard(board,ROW,COL);//ROW和COL是常量同上。
+	char ret = 0;//接收游戏状态
+	while (1)
+	{
+		//玩家走
+		palyermove(board, ROW, COL);//board的数传过去了，但是它不知道下在几行几列，所以把坐标传过去 ROW COL
+		displayboard(board, ROW, COL);
+		//判断玩家赢得游戏
+		ret = iswin(board, ROW, COL);
+		if (ret != 'c')
+		{
+			break;
+		}
+
+		//电脑走
+		computermove(board, ROW, COL);
+		displayboard(board, ROW, COL);
+		//判断电脑赢得游戏
+		ret = iswin(board, ROW, COL);
+		if (ret != 'c')
+		{
+			break;
+		}
+	}
+	if (ret == 'O')
+	{
+		printf("玩家赢\n");
+	}
+	else if (ret == 'X')
+	{
+		printf("电脑赢\n");
+	}
+	else
+	{
+		printf("平局\n");
+	}
+	displayboard(board, ROW, COL);
+}
+
+int main()
+{
+	int a = 0;
+	srand((unsigned int)time(NULL));
+	do
+	{
+		menu();
+		printf("请选择\n");
+		scanf("%d", &a);
+		switch (a)
+		{
+		case 1:
+			game();
+			break;
+		case 0:
+			printf("退出游戏\n");
+			break;
+		default:
+			printf("重新选择\n");
+			break;
+		}
+
+	} while (a);
+
+	return 0;
+}
