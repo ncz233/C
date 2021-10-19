@@ -1,0 +1,145 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include<stdio.h>
+
+//调试技巧
+//f5启动调试一直走到尾
+//f9断点，调试的时候直接跳到这里
+//f10调试一个一个调试，但是遇到函数会跳过去
+//f11大体上和f10一样，但是f11可以进入函数内部
+//ctrl+f5执行
+
+
+//void test()//f11进入
+//{
+//	int a = 10;
+//	int b = 20;
+//	int c = a + b;
+//}
+//int main()
+//{
+//
+//	int arr[10] = { 0 };
+//	int a = sizeof(arr) / sizeof(arr[0]);
+//	int i = 0;
+//	for ( i = 0; i < a; i++)
+//	{
+//		arr[i] = i + 1;
+//
+//	}
+//	for (i = 0; i < a; i++)
+//	{
+//		test();
+//		printf("%d\n", arr[i]);
+//	}
+//
+//	return 0;
+//}
+
+//调用堆栈。函数的调用逻辑
+//栈 = 堆栈
+//void test2()
+//{
+//	printf("haha\n");
+//}
+//void test1()
+//{
+//	test2();
+//}
+//void test()
+//{
+//	test1();
+//}
+//int main()
+//{
+//	test();
+//	return 0;
+//}
+
+//条件断点
+//int main()
+//{
+//
+//	int arr[10] = { 0 };
+//	int a = sizeof(arr) / sizeof(arr[0]);
+//	int i = 0;
+//	for ( i = 0; i < a; i++)
+//	{
+//		arr[i] = i + 1;
+//
+//	}
+//	for (i = 0; i < a; i++)
+//	{
+//		printf("%d\n", arr[i]);
+//	}
+//
+//	return 0;
+//}
+
+//练习
+//计算n的阶乘
+//int main()
+//{
+//	int n = 0;
+//	scanf("%d", &n);
+//	int a = 1;
+//	
+//	int j = 0;
+//	int num = 0;
+//	for ( j = 1; j <= n; j++)
+//	{
+//		int i = 0;
+//		for (i = 1; i <= j; i++)//i == 3时候a == 2，应该是1不是2
+//		{
+//			a *= i;
+//		}
+//		num += a;
+//	}
+//	printf("%d", num);
+//	return 0;
+//}
+
+//死循环，因为是i恰好在arr后面2位置，i赋值0给后两位，而后两位恰好是i所以i=0，无限循环下去
+//原因是局部变量是放在栈区上的，而栈区的使用习惯是先使用高地址空间，再使用低地址空间，数组随着下标的增长地址是由底到高变化的
+//编译器是随机的
+//int main()
+//{
+//	int i = 0;
+//	int arr[10] = { 1,2,3,4,5,6,7,8,9,10 };
+//	
+//	for ( i = 0; i <= 12; i++)
+//	{
+//		arr[i] = 0;
+//		printf("hehe\n");
+//	}
+//	return 0;
+//}
+
+//练习
+
+//void my_strcpy(char* a, char* b)
+//{
+//	while (b != '\0')
+//	{
+//		*a = *b;
+//		a++;
+//		b++;
+//	}
+//	*a = '\0';
+//}
+void my_strcpy(char* a, char* b)
+{
+	while (*a++ = *b++)
+	{
+		;
+	}
+}
+
+int main()
+{
+	char arr1[20] = "xxxxxxxxxx";
+	char arr2[] = "hello";
+	my_strcpy(arr1, arr2);
+	printf("%s\n", arr1);
+	return 0;
+}
