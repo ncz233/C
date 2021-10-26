@@ -1,0 +1,508 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include<stdio.h>
+
+//练习
+//5名运动员比赛
+//a：b第二，我第三
+//b: 我第二，e第四
+//c: 我第一，d第2
+//d: c最后，我第三
+//e：我第四，a第一
+//比赛结束后，每位选手说对一半，找名次
+//int main()
+//{
+//	int a = 0;
+//	int b = 0;
+//	int c = 0;
+//	int d = 0;
+//	int e = 0;
+//	for (  a= 1; a <= 5; a++)
+//	{
+//		for ( b = 1; b <= 5; b++)
+//		{
+//			for ( c = 1; c <= 5; c++)
+//			{
+//				for ( d = 1; d <= 5; d++)
+//				{
+//					for ( e = 1; e <= 5; e++)
+//					{
+//						//if ((b == 2)+(a == 3) == 1)
+//						//{
+//						//	if ((b == 2)+(e == 4) == 1)
+//						//	{
+//						//		if ((c == 1) + (d == 3) == 1)
+//						//		{
+//						//			if ((c == 5)+(d == 3) == 1)
+//						//			{
+//						//				if ((e == 4)+(a == 1) == 1)
+//						//				{
+//						//					printf("a = %d\nb = %d\nc = %d\nd = %d\ne = %d\n", a, b, c, d, e);
+//						//				}
+//						//			}
+//						//		}
+//						//	}
+//						//}
+//						if ((b == 2)+(a == 3) == 1 
+//							&& (b == 2) + (e == 4) == 1 
+//							&& (c == 1) + (d == 2) == 1 
+//							&& (c == 5) + (d == 3) == 1 
+//							&& (e == 4) + (a == 1) == 1)
+//						{
+//							//printf("a=%d b=%d c=%d d=%d e=%d\n", a, b, c, d, e);
+//							if (a*b*c*d*e == 120)
+//							{
+//								printf("a=%d b=%d c=%d d=%d e=%d\n", a, b, c, d, e);
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//	return 0;
+//}
+
+
+//一级指针传参
+//二级指针传参
+//只有指针类型相同才可以传过去
+
+//一级指针
+//void print(int* ptr, int sz)
+//{
+//	int i = 0;
+//	for ( i = 0; i < sz; i++)
+//	{
+//		//都行
+//		printf("%d ", ptr[i]);
+//		printf("%d ", *(ptr+i));
+//	}
+//}
+//
+//void test(char* p)//一级指针形参
+//{
+//
+//}
+//int main()
+//{
+//	int arr[] = { 1,2,3,4,5,6,7,8,9,10 };
+//	int* p = arr;
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	//p是一级指针
+//	print(p,sz);
+//	char ch = 'w';
+//	tset(&ch);//传地址过去，没问题
+//	char* pc = ch;
+//	tset(pc);//传指针过去，指针接收，没问题
+//
+//	return 0;
+//}
+
+//二级指针
+//void test(int** p2)//二级指针传参
+//{
+//	**p2 = 20;
+//	
+//}
+//int main()
+//{
+//	int a = 10;
+//	int* pa = &a;//一级指针
+//	int** ppa = &pa;//二级指针
+//	//把二级指针进行传参
+//	test(ppa);//二级指针传过去，二级指针接收，没问题
+//	test(&pa);//一级指针传过去，没问题
+//
+//	int* arr[5] = { 0 };//指针数组，数组里存的是指针，指针类型根据前面的来判断，比如这个int*，这个数组里有5个元素，每个元素类型是int*
+//	test(arr);//一级指针的数组，数组名相当于首元素地址，int*
+//	
+//
+//	printf("%d\n", a);
+//	return 0;
+//}
+
+//复习前面的
+//一级指针
+//int*p; - 整型指针 - 指向整型的指针
+//char*p; - 字符指针 - 指向字符的指针
+//void*p; - 空指针 - 无类型的指针
+//
+//二级指针
+//char**p; -- 存放字符指针的指针 - 指向字符指针的指针
+//int**p; -- 存放整型指针的指针 - 指向整型指针的指针
+//
+//数组指针
+//int(*p)[4]; - 数组指针 - 指向数组的指针
+//
+//数组
+//一维数组
+//int a[];
+//
+//二维数组
+//int a[][];
+// 
+//指针数组
+//int*p[]; - 存放指针的数组
+
+//函数指针 - 指向函数的指针 - 存放函数地址的指针
+//补充：数组名 != &数组名
+//		函数名 == &函数名
+//函数名本身就是地址
+//
+//int add(int x, int y)
+//{
+//	return x + y;
+//}
+//int main()
+//{
+//	int a = 10;
+//	int* pa = &a;
+//
+//	char ch = 'w';
+//	char* pc = &ch;
+//
+//	int arr[10] = { 0 };
+//	int(* parr)[10] = &arr;//取出数组的地址
+//	//parr - 是指向数组的指针 - 存放的是数组的地址
+//
+//	//函数指针 - 存放函数地址的指针
+//	//&函数名 - 取到的就是函数的地址
+//	
+//	//pf就是一个函数指针变量
+//	int (*pf)(int ,int) = &add
+//
+//	printf("%p\n", &add);
+//	printf("%p\n", add);//一样
+//
+//
+//	return 0;
+//}
+
+//练习
+//void test(char* str)
+//{
+//
+//}
+//int mian()
+//{
+//	void (*pt)(char*) = &test;
+//
+//	return 0;
+//}
+
+//int add(int x, int y)
+//{
+//	return x + y;
+//}
+//int main()
+//{
+//	//pf就是一个函数指针变量
+//	//int (*pf)(int, int) = &add;
+//	//得出&add == (*pf)
+//	//因为函数名 == &函数名
+//	int (*pf)(int, int) = add;//一样
+//	//得出add == pf
+//	int atr = (*pf)(5, 3);//(*pf)*在这里没有实际上的意义
+//	int atr = pf(5, 3);
+//	int atr = add(5, 3);//这个是函数名表示
+//	//全一样 
+//	printf("%d", atr);
+//
+//	int atr = * pf(5, 3);//不行符号运算属性，()优先级大于*，所以先算出8，已经得出8了，还解引用脑子有泡，
+//	//可以这样理解，通过函数指针解引用之后，就可以看成普通函数调用一样
+//	
+//	return 0;
+//}
+
+//有趣的代码
+//int main()
+//{
+//	(*(void(*)())0)();
+//	//调用0地址处的函数
+//	//该函数无参，返回的是viod
+//	//1.void(*)() - 函数指针类型
+//	//2.(void(*)())0 - 对0强制类型转换，被解释成为一个函数地址
+//	//3.*(void(*)())0 - 对0地址进行解引用操作
+//	//4.(*(void(*)())0)() - 调用0地址处的函数
+//	//出自，《C陷阱和缺陷》
+//
+//	void (*signal(int, void(*)(int)))(int);
+//	//typedef - 对类型进行重定义
+//	typedef void(*pfun_t)(int);//对函数指针类型重命名为pfun_t
+//	//typedef unsigned int uint;//和上面一样
+//	pfun_t signal(int, void(*)(int));
+//
+//	void(*)(int) signal(int, void(*)(int));
+//	//1.signal和（）结合，说明signal是函数名
+//	//2.signal函数的第一个参数的类型是int，第二个参数类型是函数指针
+//	//该函数指针，指向一个参数为int，返回类型是void的
+//	//3.signal函数的返回类型也是一个函数指针
+//	//该函数指针，指向一个参数为int，返回类型是void的
+//	//signal是一个函数的声明
+//	//
+//
+//	return 0;
+//}
+
+//函数指针数组 - 存放函数指针的数组
+//
+//整型指针 int*
+//整型指针数组 int* arr[5]
+//int add(int x, int y)
+//{
+//	return x + y;
+//}
+//int sub(int x, int y)
+//{
+//	return x - y;
+//}
+//
+//int main()
+//{
+//	//两个类型都一样了，所以函数指针数组是存放同类型指针数组
+//	int (*pc)(int, int) = &add;
+//	int (*ps)(int, int) = &sub;
+//	int (*pfarr[2])(int, int) = {add,sub};//pfarr就是函数指针数组
+//	return 0;
+//}
+
+//练习
+//int add(int x, int y)
+//{
+//	return x + y;
+//}
+//int sub(int x, int y)
+//{
+//	return x - y;
+//}
+//int mul(int x, int y)
+//{
+//	return x * y;
+//}
+//int div(int x, int y)
+//{
+//	return x / y;
+//}
+//
+//void mulu()
+//{
+//	printf("#####1.add###2.sub#####\n");
+//	printf("#####3.mul###4.div#####\n");
+//	printf("########0.ext##########\n");
+//	printf("#######################\n");
+//}
+//
+//int main()
+//{
+//	int a = 0;
+//	do
+//	{
+//		mulu();
+//		printf("请输入\n");
+//		scanf("%d", &a);
+//		int x = 0;
+//		int y = 0;
+//		int ret = 0;
+//		switch (a)
+//		{
+//		case 1:
+//			printf("请输入两个数\n");
+//			scanf("%d %d", &x, &y);
+//			ret = add(x, y);
+//			printf("%d\n", ret);
+//			break;
+//		case 2:
+//			printf("请输入两个数\n");
+//			scanf("%d %d", &x, &y);
+//			ret = sub(x, y);
+//			printf("%d\n", ret);
+//			break;
+//		case 3:
+//			printf("请输入两个数\n");
+//			scanf("%d %d", &x, &y);
+//			ret = mul(x, y);
+//			printf("%d\n", ret);
+//			break;
+//		case 4:
+//			printf("请输入两个数\n");
+//			scanf("%d %d", &x, &y);
+//			ret = div(x, y);
+//			printf("%d\n", ret);
+//			break;
+//		case 0:
+//			printf("886\n");
+//			break;
+//		default:
+//			printf("重新输入\n");
+//			break;
+//		}
+//
+//	} while (a);
+//	int (*pfarr[2])(int, int) = {add,sub};//pfarr就是函数指针数组
+//	return 0;
+//}
+
+//重新 - 优化
+//int add(int x, int y)
+//{
+//	return x + y;
+//}
+//int sub(int x, int y)
+//{
+//	return x - y;
+//}
+//int mul(int x, int y)
+//{
+//	return x * y;
+//}
+//int div(int x, int y)
+//{
+//	return x / y;
+//}
+//
+//void mulu()
+//{
+//	printf("#####1.add###2.sub#####\n");
+//	printf("#####3.mul###4.div#####\n");
+//	printf("########0.ext##########\n");
+//	printf("#######################\n");
+//}
+//
+//int main()
+//{
+//	int a = 0;
+//	do
+//	{
+//		mulu();
+//		int x = 0;
+//		int y = 0;
+//		int ret = 0;
+//
+//		//pfarr是函数指针数组
+//		//转移表 - 《c和指针》
+//		int (*pfarr[5])(int, int) = { NULL,add,sub,mul,div };
+//		printf("请输入\n");
+//		scanf("%d", &a);
+//		if (a>=1 && a <= 4)
+//		{
+//			printf("请输入两个数\n");
+//			scanf("%d %d", &x, &y);
+//			ret = (pfarr[a])(x, y);
+//			printf("%d\n", ret);
+//		}
+//		else if (a == 0)
+//		{
+//			printf("886\n");
+//			break;
+//		}
+//		else
+//		{
+//			printf("输入错误\n");
+//		}
+//		
+//
+//	} while (a);
+//	int (*pfarr[2])(int, int) = { add,sub };//pfarr就是函数指针数组
+//	return 0;
+//}
+
+//函数指针数组 - 数组
+//取出函数指针数组的地址
+// 
+//整型数组
+//int arr[5]
+//int(*p1)[5] = &arr
+// 
+//整型指针的数组
+//int*arr[5]
+//int*(*p2)[5] = &arr
+//p2是指向[整数指针的数组]的指针
+// 
+// 函数指针数组
+// &函数指针数组的类型是去掉指针部分 = int(*(*p3)[4])(int int) = int(*)(int int)
+// int(*p1)(int int);//函数指针
+// int(*p2[4])(int int);//函数指针的数组
+// p3 = &p2;//取出的是函数指针数组的地址
+// int(*(*p3)[4])(int int);
+// p3就是一个指向[函数指针的数组]的指针
+//
+
+//回调函数 - 就是通过函数指针调用的函数
+//把a函数地址作为参数传到b函数，然后在b函数中，通过这个传过来的地址访问a
+//可以理解，回调函数可以理解为参数指针。
+int add(int x, int y)
+{
+	return x + y;
+}
+int sub(int x, int y)
+{
+	return x - y;
+}
+int mul(int x, int y)
+{
+	return x * y;
+}
+int div(int x, int y)
+{
+	return x / y;
+}
+
+void mulu()
+{
+	printf("#####1.add###2.sub#####\n");
+	printf("#####3.mul###4.div#####\n");
+	printf("########0.ext##########\n");
+	printf("#######################\n");
+}
+
+//回调函数机制
+int calc(int(*p)(int, int))
+{
+	int x = 0;
+	int y = 0;
+	printf("请输入两个数\n");
+	scanf("%d %d", &x, &y);
+	return p(x, y);
+}
+int main()
+{
+	int a = 0;
+	do
+	{
+		mulu();
+		printf("请输入\n");
+		scanf("%d", &a);
+		int x = 0;
+		int y = 0;
+		int ret = 0;
+		switch (a)
+		{
+		case 1:
+			ret = calc(add);
+			printf("%d\n", ret);
+			break;
+		case 2:
+			ret	 = calc(sub);
+			printf("%d\n", ret);
+			break;
+		case 3:
+			ret = calc(mul);
+			printf("%d\n", ret);
+			break;
+		case 4:
+			ret = calc(div);
+			printf("%d\n", ret);
+			break;
+		case 0:
+			printf("886\n");
+			break;
+		default:
+			printf("重新输入\n");
+			break;
+		}
+
+	} while (a);
+	int (*pfarr[2])(int, int) = {add,sub};//pfarr就是函数指针数组
+	return 0;
+}
