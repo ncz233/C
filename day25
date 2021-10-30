@@ -1,0 +1,412 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include<stdio.h>
+#include<string.h>
+#include<assert.h>
+#include<errno.h>
+
+//字符函数和字符串函数
+//求字符串长度
+// strlen
+//长度不受限制的字符串函数
+// strcpy
+// strcat
+// strcmp
+//长度受限制的字符串函数介绍:有了限制可以让代码相对安全稳定
+// strncpy
+// strncat
+// strncmp
+//字符串查找
+// strstr
+// strtok
+//错误信息报告
+// strerror
+//字符操作
+//内存操作函数
+// memcpy
+// memmove
+// memset
+// memcmp 
+
+//strlen字符串个数
+//1.计数器的版本
+//2.递归的版本
+//3.指针-指针版本
+//
+//int my_strlen(const char* str)
+//{
+//	assert(str != NULL);
+//	int count = 0;//计数器
+//	while (*str != '\0')
+//	{
+//		count++;
+//		str++;
+//	}
+//	return count;
+//}
+//
+//int main()
+//{
+//	char a[] = "abc";
+//	//char a[] = {'a','b','c'};
+//	int len = my_strlen(a);//自己写求出字符串的长度
+//	printf("%d\n", len);
+//	printf("%s\n", a);
+//	return 0;
+//}
+
+//int main()
+//{
+//	//库函数strlen的返回值是无符号整数，无符号整数—无符号整数，得到的数是非常打的数字
+//	if ((strlen("abc") - strlen("abcdef")) > 0)
+//	{
+//		printf(">\n");
+//	}
+//	else
+//	{
+//		printf("<=\n");
+//	}
+//
+//	return 0;
+//}
+
+//strcpy，字符串拷贝
+//int main()
+//{
+//	//char a[5] = { 0 };
+//	char* a3 = "#################";
+//	//a = "hello";//err
+//	//char* p = "hello";
+//
+//	//strcpy(a, "hello");//会把\0一起拷过取
+//	//char* strcpy(char* destination, const char* source)//destination这个指向a的数组，source指向hello，h的地址
+//
+//	//char a2[] = { 'a','b','c'};
+//	//strcpy(a, a2);//会报错，因为没有找到\0不会停下，所以挂掉了
+//
+//	char* p = "holle world";
+//	//strcpy(a, p);//他只管拷进去，其他的不管
+//
+//	strcpy(a3, p);//目标空间，必须可修改，不然代码会崩。
+//
+//
+//	//printf("%s\n", a);
+//	return 0;
+//}
+
+//strcat字符串追加
+//int main()
+//{
+//	char arr1[20] = "hello";//+world
+//	char arr2[] = " world";
+//	//可以直接把world字符串传过去，也可以是数组名传过去
+//	strcat(arr1,arr2);//字符串追加(连接)
+//	//char* strcat(char* destination, const char* source);
+//	//目标和追加的部分必须有\0，目标\0表示从\0开始追加，追加的\0表示最后要把\0给加进去
+//	//目标空间必须可修改，可修改
+//	printf("%s\n", arr1);
+//	return 0;
+//}
+
+//实现strcat
+//char* my_strcat(char* dest, const char* src)
+//{
+//	char* p = dest;
+//	assert(dest && src);
+//	//1.找到目标中的\0位置
+//	while (*dest)
+//	{
+//		dest++;
+//	}
+//	//2.源数据追加过去，包含\0
+//	//int len = strlen(dest);
+//	while (*dest++ = *src++)
+//	{
+//		;
+//	}
+//	return p;//返回的是目标空间的起始地址
+//}
+//
+//int main()
+//{
+//	char arr1[20] = "hello";
+//	char arr2[] = " world";
+//	//my_strcat(arr1, arr2);
+//	printf("%s\n", my_strcat(arr1, arr2));
+//	return 0;
+//}
+
+//strcat注意
+//int main()
+//{
+//	char arr1[20] = "hello";
+//
+//	strcat(arr1, arr1);//不行，因为它们是同一个数组，自己拷贝自己，会把\0给改变，这样会无限拷贝下去
+//	printf("%s\n", arr1);
+//
+//	return 0;
+//}
+
+//strcmp 字符串比较函数
+//int main()
+//{
+//	//char* p = "obc";
+//	//char* q = "abcdef";
+//	//if (p>q)//不能比大小
+//	//{
+//	//	printf(">\n");
+//	//}
+//	//else
+//	//{
+//	//	printf("<=\n");
+//	//}
+//	//if ("obc">"abcdef")//不能比大小
+//	//{
+//
+//	//}
+//	//字符串比较大小绝对不能用>,<号
+//
+//	//strcmp比较的是大小不是长度
+//	//int ret = strcmp("abbc", "abc");//第一个 < 第二个
+//	//int ret = strcmp("aqq", "abc");//第一个 > 第二个
+//	int ret = strcmp("abc", "abc");//第一个 = 第二个
+//	//int strcmp(const char* str1, const char* str2);//第一个大于第二个返回>0的数字，等于返回0，小于返回<0的数字
+//	printf("%d\n",ret );
+//
+//	return 0;
+//}
+
+//实现strcmp
+//int my_strcmp(const char* a,const char* b)
+//{
+//	assert(a && b);
+//	while (*a == *b)
+//	{
+//		if (*a == '\0')
+//		{
+//			return 0;
+//		}
+//		a++;
+//		b++;
+//	}
+//	if (*a > *b)
+//	{
+//		return 1;
+//	}
+//	else
+//	{
+//		return -1;
+//	}
+//}
+//int my_strcmp(const char* a, const char* b)
+//{
+//	assert(a && b);
+//	while (*a == *b)
+//	{
+//		if (*a == '\0')
+//		{
+//			return 0;
+//		}
+//		a++;
+//		b++;
+//	}
+//	//return (*a > *b) ? 1 : -1;//大于0、小于0或等于0 就行了
+//	return *a - *b;
+//	
+//}
+//
+//int main()
+//{
+//	char* p = "abcdef";
+//	char* q = "abcdef";
+//	int str = my_strcmp(p, q);
+//	if (str > 0)
+//	{
+//		printf("p>q\n");
+//	}
+//	else if (str < 0)
+//	{
+//		printf("p<q\n");
+//	}
+//	else
+//	{
+//		printf("p=q\n");
+//	}
+//
+//	return 0;
+//}
+
+//长度不受限制的字符串函数
+// strcpy
+// strcat
+// strcmp
+//长度受限制的字符串函数介绍
+// strncpy
+// strncat
+// strncmp
+
+// strncpy
+//char* strncpy(char* destination, const char* source, size_t num);
+//int main()
+//{
+//	char arr1[20] = "abqaabbcc";
+//	char arr2[20] = "qwbb";
+//	strncpy(arr1, arr2, 6);//arr2不够也给你拷，拷的是\0
+//	printf("%s\n", arr1);
+//
+//	//自己实现去
+//	return 0;
+//}
+
+//strncat
+//char * strncat ( char * destination, const char * source, size_t num );
+//int main()
+//{
+//	char arr1[20] = "hello \0";
+//	char arr2[] = "world";
+//	strncat(arr1, arr2, 6);
+//	printf("%s\n", arr1);
+//	return 0;
+//}
+
+//strncmp
+//int strncmp ( const char * str1, const char * str2, size_t num );
+//int main()
+//{
+//	char* p = "abcde";
+//	char* q = "abcdef";
+//	//int ret = strcmp(p, q);
+//	//printf("%d\n", ret);
+//	int ret2 = strncmp(p, q, 5);
+//	printf("%d\n",ret2);
+//	return 0;
+//}
+
+//strstr在一个字符串中找另一个字符串
+//const char * strstr ( const char * str1, const char * str2 );
+//		char* strstr(char* str1, const char* str2);
+
+//实现strstr
+//char* my_strstr(const char* str1, const char* str2)
+//{
+//	assert(str1 && str2);
+//	//要存起来，如果最后一个不一样，会从找的下一个开始找
+//	const char* s1 = str1;
+//	const char* s2 = str2;
+//	//记录开始走的位置
+//	const char* cp = str1;
+//
+//	if (*str2 == '\0')
+//	{
+//		return (char*)str1;
+//	}
+//	while (cp)
+//	{
+//		s1 = cp;
+//		s2 = str2;
+//		while (*s1 && *s2 && (*s1 == *s2))//开始走，*s1 && *s2 是为了防止最后相等，把\0也算上，越界访问，判断失误
+//		{
+//			s1++;
+//			s2++;
+//		}
+//		if (*s2 == '\0')
+//		{
+//			return (char*)cp;//返回开始走的位置
+//		}
+//		cp++;//不相等会返回开始走的地方
+//	}
+//	return NULL; 
+//}
+//int main()
+//{
+//	char arr1[] = "abbbcdef";
+//	char arr2[] = "bbc";
+//	//在arr1查找是否包含arr2数组
+//	char* p = my_strstr(arr1, arr2);//找到了返回第一次arr2在arr1中出现的地址，找不到返回NULL空指针
+//	if (p == NULL)
+//	{
+//		printf("没找到\n");
+//	}
+//	else
+//	{
+//		printf("找到了：%s\n", p);
+//	}
+//
+//	return 0;
+//}
+
+//KMP - 字符串查找算法 - 自己找去
+
+//strtok - 切割字符串
+//比如
+//ncz@233.test
+//ncz
+//233
+//test
+//又比如
+//192.168.3.122
+//192
+//168
+//3
+//122
+
+//strtok
+//char * strtok ( char * str, const char * delimiters );
+//str是字符串，delimiters是切割符号
+//ncz@233.test
+//@ .
+//int main()
+//{
+//	char arr[] = "ncz@233.test hehe";
+//	char p[] = "@. ";
+//	char tmp[20] = { 0 };
+//	strcpy(tmp, arr);
+//	//ncz\0233\0test
+//	//把分隔符改成\0，记录位置
+//	//因为是遇到\0就不会去算了，但是会记录位置，如果下次再用strtok函数它会从记录的位置去算，直到最后找但是找不到位置了
+//	//大胆的猜想：为什么会记录位置，不是出了函数会销毁的吗，应该有static静态局部变量，把null作为判断条件的
+//
+//	char* ret = NULL;
+//	for (ret = strtok(tmp, p); ret != NULL;ret = strtok(NULL, p))
+//	{
+//		printf("%s\n", ret);
+//	}
+//	//ret = strtok(tmp, p);
+//	//printf("%s\n",ret);
+//	//ret = strtok(NULL, p);
+//	//printf("%s\n", ret);
+//	//ret = strtok(NULL, p);
+//	//printf("%s\n", ret);
+//	//找到分隔符会在字符串中有此符号的变\0，会把切割符号改掉
+//	//所以一般切割字符串前都是临时拷贝的内容且可以修改，就是像切割但不想改就切临时的
+//	return 0;
+//}
+
+//strerror - 它可以给我们报出来错误信息是什么 
+//打调用库函数失败时候的错误码
+// 
+//使用库函数的时候
+//调用库函数失败的时候，都会设置错误码
+//C语言库函数调用失败
+//int errno
+//全局的错误码
+//errno
+
+int main()
+{
+	//printf("%s\n", strerror(0));//没错
+	//printf("%s\n", strerror(1));//操作被拒绝了
+	//printf("%s\n", strerror(2));//没有这个文件或文件夹
+	//printf("%s\n", strerror(3));//没有这个进程
+	//printf("%s\n", strerror(4));//调用函数被中断
+	//printf("%s\n", strerror(5));//输入或输出错误
+	FILE* pf = fopen("test.txt","r");
+	if (pf == NULL)
+	{
+		printf("%s\n", strerror(errno));
+		return 1;
+	}
+	//成功
+	fclose(pf);
+	pf = NULL;
+	return 0;
+}
