@@ -1,0 +1,101 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include<stdio.h>
+#include<errno.h>
+#include<string.h>
+#include<ctype.h>
+#include<assert.h>
+
+//perror是直接打印的，不需要printf
+//首先把错误码转化成错误信息
+//其次打印错误信息（包含了自定义的信息）
+//int main()
+//{
+//	//打开文件失败时会返回一个空指针null
+// 	FILE* pf =  fopen("test.txt", "r");
+//	if (pf == NULL)
+//	{
+//		//printf("%s\n", strerror(errno));
+//		perror("fopen");//直接
+//		return 1;
+//	}
+//	//读文件
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+
+//字符函数
+//字符分类函数
+//
+//int main()
+//{
+//	//判断是否为数字字符 isdigit
+//	//如果是返回非0
+//	//如果不是返回0
+//	char ch = '3';
+//	int ret = isdigit(ch);
+//	printf("%d\n", ret);
+//
+//	return 0;
+//}
+
+//字符转换函数
+// tolower转小写
+// toupper转大写
+//int main()
+//{
+//	char arr1[20] = { 0 };
+//	scanf("%s", arr1);
+//	int i = 0;
+//	while (arr1[i] != '\0')
+//	{
+//		if (isupper(arr1[i]))//isupper是大写的意思
+//		{
+//			arr1[i] = tolower(arr1[i]);
+//			//printf("%c ",arr1[i]);//这里只能打出修改过的
+//		}
+//		printf("%c ",arr1[i]);//这里打印的是全部的
+//		i++;
+//	}
+//	return 0;
+//}
+
+//内存函数
+// memcpy
+// memove
+// memmcmp
+// memset
+//
+
+//memcpy - 内存拷贝
+//void * memcpy ( void * destination, const void * source, size_t num );
+//第一个是目的地，第二个是源头，第三个拷贝多少字节的空间
+
+void* my_memcpy(void* dest, const void* src, size_t num)
+{
+	void* arr = dest;
+	assert(dest && src);
+	//*dest = *src;//这样是不行的，无类型指针是不能直接解引用和++--的，用char指针类型，因为它的类型是移动1个字节
+	//dest++;
+	//src++;
+	while (num--)
+	{
+		//*(char*)dest = *(char*)src;//++高于强制类型转换
+		////*(char*)dest++ = *(char*)src++;//不能++因为强制类型转换是临时，编译器认为是先dest++在强制类型转换，但是无类型指针不能运算
+		//dest = (char*)dest+1;
+		//src = (char*)src+1;
+		*((char*)dest)++ = *((char*)src)++;//这样也行
+	}
+	return arr;
+}
+int main()
+{
+	int arr1[10] = { 1,2,3,4,5,6,7,8,9,10 };
+	int arr2[10] = { 0 };//拷贝到这里
+	//retcpy是拷贝到字符串的，整型拷贝不了，况且retcpy收拷贝到\0停止，整型在内存中0是\0
+
+	my_memcpy(arr2, arr1, 20);
+	return 0;
+}
