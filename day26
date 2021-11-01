@@ -73,29 +73,277 @@
 //void * memcpy ( void * destination, const void * source, size_t num );
 //第一个是目的地，第二个是源头，第三个拷贝多少字节的空间
 
-void* my_memcpy(void* dest, const void* src, size_t num)
+//void* my_memcpy(void* dest, const void* src, size_t num)
+//{
+//	void* arr = dest;
+//	assert(dest && src);
+//	//*dest = *src;//这样是不行的，无类型指针是不能直接解引用和++--的，用char指针类型，因为它的类型是移动1个字节
+//	//dest++;
+//	//src++;
+//	while (num--)
+//	{
+//		*(char*)dest = *(char*)src;//++高于强制类型转换
+//		//*(char*)dest++ = *(char*)src++;//不能++因为强制类型转换是临时，编译器认为是先dest++在强制类型转换，但是无类型指针不能运算
+//		dest = (char*)dest+1;
+//		src = (char*)src+1;
+//		//*((char*)dest)++ = *((char*)src)++;//这样也行,但是安全起见还是用上面的
+//	}
+//	return arr;
+//}
+//int main()
+//{
+//	int arr1[10] = { 1,2,3,4,5,6,7,8,9,10 };
+//	int arr2[10] = { 0 };//拷贝到这里
+//	//retcpy是拷贝到字符串的，整型拷贝不了，况且retcpy收拷贝到\0停止，整型在内存中0是\0
+//
+//	my_memcpy(arr2, arr1, 20);
+//	return 0;
+//}
+
+//memcpy - 不能拷贝内存重叠部分
+//memmove - 可以处理内存重叠的情况
+//void * memcpy ( void * destination, const void * source, size_t num );
+//和memcpy函数是一模一样
+
+//实现memmove
+//从前面拷贝，也可以从后向前拷贝
+//dest在src前从前向后拷
+//dest在src中从后向前拷
+//dest在src后从前向后||从后向前拷都行，推荐从后向前
+//因为dest在src中之后的都是从后向前
+//memory - 内存的意思
+//void* my_memmove(void* dest, const void* src, size_t num)
+//{
+//	assert(dest && src);
+//
+//	if (dest < src)
+//	{
+//		//前 -> 后
+//		while (num -- )
+//		{
+//			*(char*)dest = *(char*)src;
+//			dest = (char*)dest + 1;
+//			src = (char*)src + 1;
+//			
+//		}
+//	}
+//	else
+//	{
+//		//后 -> 前
+//		while (num--)
+//		{
+//			*((char*)dest+num) = *((char*)src+num);
+//
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	int arr1[10] = { 1,2,3,4,5,6,7,8,9,10 };
+//	//把12345这块地址，放到34567中
+//	//1 2 1 2 3 4 5 8 9 10
+//	//当拷贝的时候有重叠的部分，会把3改成1，4改2，6改1六改2，.......
+//	//1 2 1 2 1 2 1 8 9 10
+//	//my_memcpy(arr1 + 2, arr1, 20);
+//	//my_memmove(arr1 + 2, arr1, 20);
+//	memcpy(arr1 + 2, arr1, 20);
+//	//memcpy - 只要实现了不重叠拷贝就可以了，为什么memcpy能拷重叠部分呢
+//	//因为VS编译器中实现既可以拷贝不重叠，也可以拷贝重叠内存
+//	//超长完成任务了
+//	int i = 0;
+//	int sz = sizeof(arr1) / sizeof(arr1[0]);
+//	for ( i = 0; i < sz; i++)
+//	{
+//		printf("%d ",arr1[i]);
+//	}
+//	return 0;
+//}
+
+//memcmp - 内存比较
+//int memcmp ( const void * ptr1, const void * ptr2, size_t num );
+//int main()
+//{
+//	float arr1[] = { 1.0,2.0,3.0 };
+//	float arr2[] = { 1.0,3.0 };
+//	int str = memcmp(arr1, arr2, 6);
+//	printf("%d\n", str);
+//
+//	return 0;
+//}
+
+//memset - 内存设置函数
+//void * memset ( void * ptr, int value, size_t num );
+//int main()
+//{
+//	int arr[10] = { 0 };
+//	//选择目标，给目标设置数，设置多少字节
+//	memset(arr, 1, 20);//以字节为单位设置内存的
+//
+//
+//	return 0;
+//}
+//内存函数完
+
+
+//自定义类型：结构体，枚举，联合
+//结构体
+// 结构体类型的声明
+// 结构的自引用
+// 结构体变量的定义和初始化
+// 结构体内存对齐
+// 结构体参数
+// 结构体实现位段(位段的填充&可移植性)
+//枚举
+// 枚举类型的定义
+// 枚举的优点
+// 枚举的使用
+//联合
+// 联合类型的定义
+// 联合的类型
+// 联合大小的计算
+
+//结构体
+//是一些值的集合，这些值称为成员变量。结构的每个成员可以是不同类型的变量
+// 数组是一组相同类型的集合
+// 结构体也是一些值的集合，结构的每个成员可以是不同类型的
+//struct tag//struct是关键字，tag是结构体的标签名。合起来结构体类型
+//{         //{}大括号里放成员列表
+//	member - list;//成员变量
+//}variable-list;//variable-list是变量列表
+//结构是一些类型的集合是复杂类型如
+// 生活中的书是复杂的：书名、作者、出版社、定价、书号......
+// 学生：姓名、性别、年龄、电话、住址
+//描述这些要用结构
+
+//struct book
+//{
+//	char name[20];
+//	int price;
+//	char id[12];
+//}b4,b5,b6;//b4.b5.b6这个是全局的
+//int main()
+//{
+//	//b1,b2,b3是局部变量
+//	struct book b1;
+//	struct book b2;
+//	struct book b3;
+//
+//
+//	return 0;
+//}
+
+//匿名结构体类型，只能用一次，用完就不能用了
+//struct 
+//{
+//	int a;
+//	char b;
+//}s;
+//struct
+//{
+//	int a;
+//	char b;
+//}*ps;
+//int main()
+//{
+//	ps = &s;//虽然结构体一样，但是站在编译器角度看，两种匿名的结构体会理解为两个完全不同的类型，所以会警告
+//
+//	return 0;
+//}
+
+//结构体类型里，是可以包含另一个结构体变量做为成员
+//struct a
+//{
+//	char a;
+//	int b;
+//};
+//struct b
+//{
+//	int c;
+//	struct a sa;
+//	float d;
+//};
+
+//结构体包含自己,肯定不行因为会死递归
+//struct N
+//{
+//	int a;
+//	struct N n;
+//};
+//int mian()
+//{
+//	struct N sn;//不行，死递归了，不知道这个结构体多大
+//	return 0;
+//}
+
+//数据结构，数据在内存中存储的结构
+//线性数据结构
+// 顺序表:内存中连续存放的
+// 链表:在内存中是乱存的，用链表串起来，怎么串起来，前面存内容后面存下一个地址(前面的叫数据域，后面的叫指针域)
+//树形
+// 二叉树
+
+//结构体自引用，为了实现链表结构 
+//这个节点能找到跟自己同类型的下一个元素
+//struct node//不能把node省略了
+//{
+//	int dest;
+//	struct node* next;//所以不是变量是指针 
+//};
+
+//可以用重命名
+//typedef struct node//不能把node省略了
+//{
+//	int dest;
+//	struct node* next;
+//}node;
+
+//结构体的变量和初始化
+//有了结构体类型，那如何定义变量，很简单
+//struct s
+//{
+//	int a;
+//	char b;
+//
+//}s1,s2;
+//struct b
+//{
+//	double d;
+//	struct s S;
+//	char c;
+//};
+//int main()
+//{
+//	//struct s s3, s4 = { 20,'x'};
+//	struct b sb = { 3.14,{100,'w'},'q' };
+//	//打印出来符号
+//	//.是结构体变量 
+//	//->是结构体指针
+//
+//	printf("%lf,%d,%c,%c\n", sb.d, sb.S.a, sb.S.b, sb.c);
+//	return 0;
+//}
+
+//结构体内存大小的计算
+//结构体内存对齐
+struct s
 {
-	void* arr = dest;
-	assert(dest && src);
-	//*dest = *src;//这样是不行的，无类型指针是不能直接解引用和++--的，用char指针类型，因为它的类型是移动1个字节
-	//dest++;
-	//src++;
-	while (num--)
-	{
-		//*(char*)dest = *(char*)src;//++高于强制类型转换
-		////*(char*)dest++ = *(char*)src++;//不能++因为强制类型转换是临时，编译器认为是先dest++在强制类型转换，但是无类型指针不能运算
-		//dest = (char*)dest+1;
-		//src = (char*)src+1;
-		*((char*)dest)++ = *((char*)src)++;//这样也行
-	}
-	return arr;
-}
+	int i;//4
+	char c;//1
+};
+struct s2
+{
+	char c1;
+	int i;//4
+	char c2;//1
+};
+
 int main()
 {
-	int arr1[10] = { 1,2,3,4,5,6,7,8,9,10 };
-	int arr2[10] = { 0 };//拷贝到这里
-	//retcpy是拷贝到字符串的，整型拷贝不了，况且retcpy收拷贝到\0停止，整型在内存中0是\0
+	struct s S = { 0 };
+	printf("%d\n", sizeof(S));//8
+	struct s2 S2 = { 0 };
+	printf("%d\n", sizeof(S2));//12
 
-	my_memcpy(arr2, arr1, 20);
 	return 0;
 }
