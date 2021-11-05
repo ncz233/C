@@ -1,0 +1,408 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include<stdio.h>
+
+
+//有序数中插入一个数
+//int main()
+//{
+//	int arr[51] = { 0 };
+//	//输入
+//	int n;
+//	//n的输入
+//	scanf("%d", &n);
+//	int i = 0;
+//	//n个数的输入
+//	for ( i = 0; i < n; i++)
+//	{
+//		scanf("%d", &arr[i]);
+//	}
+//	//排序
+//	//int j = 0;
+//	//for ( j = 0; j < n; j++)
+//	//{
+//	//	if ((arr[i] > arr[i+1]) && (arr[i+1] != '\0'))
+//	//	{
+//	//		int tmp = arr[i];
+//	//		arr[i] = arr[i + 1];
+//	//		arr[i + 1] = tmp;
+//	//	}
+//
+//	//}
+//
+//	//输入要插入的数
+//	int m = 0;
+//	scanf("%d", &m);
+//	
+//	//插入
+//	for ( i = n-1; i >= 0; i--)
+//	{
+//		if (arr[i]>m)
+//		{
+//			arr[i + 1] = arr[i];
+//		}
+//		else
+//		{
+//			arr[1 + 1] = m;
+//			break;
+//		}
+//	}
+//
+//	if (i<0)
+//	{
+//		arr[0] = m;
+//	}
+//
+//	//输出
+//	for ( i = 0; i < n+1; i++)
+//	{
+//		printf("%d ", arr[i]);
+//	}
+//	return 0;
+//}
+
+//文件操作
+// 
+//为什么使用文件
+// 记录信息持久化保存
+// 
+//什么是文件
+// 磁盘上的文件
+// 程序文件
+//  原程序文件.c
+//  目标文件(临时文件).obj(Windows环境下是.cbj)
+//  可执行程序.exe
+// 数据文件 - 程序运行时读写的数据
+// 文件名 - 唯一标识符 -文件路径+文件名主干+文件后缀
+// 
+//文件的打开和关闭
+// 文件指针
+// 每一个打开的文件都有一个文件信息区跟文件是强绑定的关联的
+//  文件信息区是一个结构体变量 - 结构体变量内存存的是文件的相关信息 - file
+// 未来操作的内容是文件信息区，也就是结构体变量
+// 一般拿结构体指针指向这片区域通过指针来维护访问这片区域的相关数据
+// FILE* pf//文件指针变量
+// 
+//文件的顺序读写
+// 
+//文件的随机读写
+// 
+//文本文件和二进制文件
+// 
+//文件读取结束的判定
+// 
+//文件缓冲区
+//
+
+// 传文件地址，打开方式
+//  打开方式
+//  "r"打开读，没有该文件打不开
+//  "w"打开一个空的文件，如果存在另一个，那该文件内容会被销毁
+//  "a"追加文件
+// 
+//打开和关闭
+//打开文件fopen函数
+//FILE * fopen ( const char * filename, const char * mode );
+//
+//关闭文件fclose函数
+//int fclose ( FILE * stream );
+//
+//int main()
+//{
+//	//文件打开失败时候会返回一个空指针
+//	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\test.txt", "w");//只能打开本空间的文件
+//	//注意：要加\，还有最好文件名是英文。
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	//写文件
+//
+//	//关闭文件 - 不关文件最后会打不开文件，因为资源被占了打不开其他的了
+//	fclose(pf);//关闭文件后，指针指向的内容被释放了，置为空最好
+//	pf = NULL;
+//
+//	return 0;
+//}
+
+//流：高度抽象的概念
+// 程序 - 流 - 屏幕||硬盘||U盘||网络||.....
+//C语言程序，只要运行起来，就默认打开了3个流
+// stdin - 标准输入流 - 键盘
+// stdout - 标准输出流 - 屏幕
+// stderr - 标准错误流 - 屏幕
+//
+
+//读写文件
+//字符输入函数 fgetc
+// int fgetc ( FILE * stream );
+//  指向的流 返回的字符正常是ascll值，失败EOF
+// 
+//字符输出函数 fputc
+// int fputc ( int character, FILE * stream ); - 可以让数据显示到屏幕上
+//  写哪一个字符，指向的流
+// 
+//文本行输入函数 fgets
+// char * fgets ( char * str, int num, FILE * stream );
+//  字符串 最多能读取多少个 指向的流
+// 
+//文本行输出函数 fputs
+// int fputs ( const char * str, FILE * stream );
+//  字符串，指向的流
+// 
+//格式化输入函数 fscanf
+// int fscanf ( FILE * stream, const char * format, ... );
+//  前面有指向的流 剩下的和scanf一样
+// 
+//格式化输出函数 fprintf
+// int fprintf ( FILE * stream, const char * format, ... )
+//  前面有指向的流 剩下的和printf一样
+// 
+//二进制输入 fread
+// size_t fread ( void * ptr, size_t size, size_t count, FILE * stream );
+//  存到指针指向的数据，元素的大小，最多写多少，指向的流  
+//二进制输出 fwrite
+// size_t fwrite ( const void * ptr, size_t size, size_t count, FILE * stream );
+//  指针指向的数据，元素的大小，最多写多少，指向的流
+//二进制是一对，因为只有二进制才能看得懂
+
+// //字符输出函数 fputc
+// int fputc ( int character, FILE * stream ); - 可以让数据显示到屏幕上
+//  写哪一个字符，指向文件的流
+//int main()
+//{
+//	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\test.txt", "w");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	//写文件
+//	//fputc('b', pf);
+//	//fputc('i', pf);
+//	//fputc('t', pf);
+//
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\test.txt", "w");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	//写文件
+//	//fputc('b', pf);
+//	//fputc('i', pf);
+//	//fputc('t', pf);
+//
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//
+//	return 0;
+//}
+
+//stdout屏幕输出流
+//int main()
+//{
+//
+//	fputc('b', stdout);
+//	fputc('i', stdout);
+//	fputc('t', stdout);
+//	return 0;
+//}
+
+//读取
+// 使用fgetc从文件中读取
+//字符输入函数 fgetc
+// int fgetc ( FILE * stream );
+//  指向的流 返回的字符正常是ascll值，失败EOF
+//int main()
+//{
+//	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\test.txt", "r");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	//读取,但是读取多了会是-1因为失败是返回EOF的
+//	int ret = fgetc(pf);
+//	printf("%c", ret);
+//	ret = fgetc(pf);
+//	printf("%c", ret);
+//	ret = fgetc(pf);
+//	printf("%c", ret);
+//	ret = fgetc(pf);
+//	printf("%c", ret);
+//	ret = fgetc(pf);
+//	printf("%c", ret);
+//	ret = fgetc(pf);
+//	printf("%c", ret);
+//
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//
+//	return 0;
+//}
+
+//也可以没有指定文件
+//int main()
+//{
+//	int ret = fgetc(stdin);
+//	printf("%c", ret);
+//	ret = fgetc(stdin);
+//	printf("%c", ret);
+//	ret = fgetc(stdin);
+//	printf("%c", ret);
+//	ret = fgetc(stdin);
+//	printf("%c", ret);
+//	return 0;
+//}
+
+//写一行
+//文本行输出函数 fouts
+// int fputs ( const char * str, FILE * stream );
+//  字符串，指向的流
+//int main()
+//{
+//
+//	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\test.txt", "w");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	//写一行
+//	fputs("abcedf\n", pf);
+//	fputs("qwertyu", pf);
+//
+//	//关闭
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+
+//文本行输入函数 fgets
+// char * fgets ( char * str, int num, FILE * stream );
+//  字符串 最多能读取多少个 指向的流，然后放在字符串指针里
+//int main()
+//{
+//	char arr[10] = "***********";
+//	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\test.txt", "r");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	//读一行
+//	fgets(arr, 3, pf);//写的是读3个字符，为什么是2个字符呢，因为要有一个留给\0，因为是字符吗
+//	printf("%s\n", arr);
+//
+//	fgets(arr, 3, pf);//不会跳过上面没读的，
+//	printf("%s\n", arr);
+//
+//	//关闭
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+
+//格式化输出函数 fprintf
+// int fprintf ( FILE * stream, const char * format, ... )
+//  前面有指向的流 剩下的和printf一样
+// 
+//struct s
+//{
+//	char arr[10];
+//	int num;
+//	float cs;
+//};
+//写
+//int main()
+//{
+//	struct s S = { "abcd",10,5.5f };
+//	//对格式化的数据进行写文件
+//	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\test.txt", "w");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	//写文件
+//	fprintf(pf, "%s %d %f", S.arr, S.num, S.cs);
+//
+//	//关闭
+//	fclose(pf);
+//	pf = NULL;
+//
+//	return 0;
+//}
+
+//读
+//格式化输入函数 fscanf
+// int fscanf ( FILE * stream, const char * format, ... );
+//  前面有指向的流 剩下的和scanf一样
+//int main()
+//{
+//	struct s S = { 0};
+//	//对格式化的数据进行写文件
+//	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\test.txt", "r");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	//读文件
+//	fscanf(pf, "%s %d %f", &(S.arr), &(S.num), &(S.cs));
+//
+//	//打印
+//	printf("%s %d %f\n", S.arr, S.num, S.cs);
+//
+//	//关闭
+//	fclose(pf);
+//	pf = NULL;
+//
+//	return 0;
+//}
+
+//上面的你都是能看的懂的
+//二进制输入 fread
+// size_t fread ( void * ptr, size_t size, size_t count, FILE * stream );
+//  存到指针指向的数据，元素的大小，最多写多少，指向的流  
+// 
+struct s
+{
+	char arr[10];
+	int num;
+	float cs;
+};
+int main()
+{
+	struct s S = {0};
+	//二级制形式写
+	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\test.txt", "r");
+	if (pf == NULL)
+			{
+				perror("fopen");
+				return 1;
+			}
+	//读文件
+	fread(&S, sizeof(struct s), 1, pf);
+	printf("%s,%d,%f", S.arr, S.num, S.cs);
+
+	//关闭
+		fclose(pf);
+	pf = NULL;
+
+	return 0;
+}
+
+//改通讯录
