@@ -1,0 +1,439 @@
+*****************************************************************constant.h
+#pragma once
+
+#include<stdio.h>
+//#include<memory.h>
+#include<string.h>
+#include<stdlib.h>
+
+#define Max 1000
+#define max_name 20
+#define max_sex 10
+#define max_tele 12
+#define max_addr 30
+#define default_sz 3
+#define inc_sz 2
+//类型的定义
+typedef struct PeoInfo
+{
+	char name[max_name];
+	char sex[max_sex];
+	int age;
+	char tele[max_tele];
+	char addr[max_addr];
+
+}PeoInfo;
+
+//通讯录 - 静态版本
+//typedef struct contact
+//{
+//	PeoInfo data[max];//存放添加进来人的信息
+//	int sz;//当前通讯录中有效信息的个数
+//}contact;
+
+//动态版本
+typedef struct contact
+{
+	PeoInfo *data;//指向动态申请空间，用来存放联系人的信息
+	int sz;//当前通讯录中有效信息的个数
+	int capacity;//记录当前通讯录的最大容量
+}contact;
+
+//初始化通讯录
+void Initcontact(contact* pc);
+
+//增加联系人
+void addcontact(contact* pc);
+
+//打印联系人信息
+void printcontact(const contact* pc);//因为是打印信息，信息是不会变的所以加const
+
+//删除
+void delcontact(contact* pc);
+
+//查找
+void searchcontact(contact* pc);
+
+//修改指定联系人
+void modiycontact(contact* pc);
+
+//销毁
+void destorycontact(contact* pc);
+
+//保存信息到文件
+void savecontact(contact* pc);
+
+//加载文件
+void loadcontact(contact* pc);
+
+//增容问题
+void check_capacity(contact* pc);
+
+
+*********************************************************************************contact.c
+#define _CRT_SECURE_NO_WARNINGS 1
+#include"constant.h"
+
+//初始化 - 静态版本的
+//void Initcontact(contact* pc)
+//{
+//	pc->sz = 0;
+//	//memset,设置内存
+//	memset(pc->data, 0, sizeof(pc->data));
+//}
+
+void loadcontact(contact* pc)
+{
+	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\tset.txt", "r");
+	if (pf == NULL)
+	{
+		perror("fopen");
+		return;
+	}
+
+	//读文件
+	PeoInfo tmp = { 0 };
+	while (fread(&tmp, sizeof(PeoInfo), 1, pf))
+	{
+		//不能直接放，因为容量不够
+		check_capacity(pc);
+		pc->data[pc->sz] = tmp;
+		pc->sz++;
+	}
+
+	//关
+	fclose(pf);
+	pf = NULL;
+}
+
+//动态
+void Initcontact(contact* pc)
+{
+	pc->data = malloc(default_sz*sizeof(PeoInfo));
+	if (pc->data == NULL)
+	{
+		perror("initcontact");
+		return;
+	}
+	pc->sz = 0;//初始化后默认为0
+	//memset,设置内存
+	//memset(pc->data, 0, sizeof(pc->data));
+	pc->capacity = default_sz;
+
+	//加载文件
+	loadcontact(pc);
+}
+
+//保存信息
+void savecontact(contact* pc)
+{
+	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\tset.txt", "w");
+	if (pf == NULL)
+	{
+		perror("fopen");
+		return;
+	}
+	//写
+	int i = 0;
+	for ( i = 0; i < pc->sz; i++)
+	{
+		fwrite(pc->data + i, sizeof(PeoInfo), 1,pf);
+	}
+	//关
+	fclose(pf);
+	pf = NULL;
+}
+
+//添加
+//void addcontact(contact* pc)
+//{
+//	if (pc->sz == max)
+//	{
+//		printf("通讯录满了\n");
+//		return;
+//	}
+//	//增加一个人的信息
+//	printf("请输入名字:>");
+//	scanf("%s", pc->data[pc->sz].name);//没有&因为name是字符串数组
+//	printf("请输入年龄:>");
+//	scanf("%d",&(pc->data[pc->sz].age));//有&因为age是变量
+//	printf("请输入性别:>");
+//	scanf("%s", pc->data[pc->sz].sex);
+//	printf("请输入电话:>");
+//	scanf("%s", pc->data[pc->sz].tele);
+//	printf("请输入地址:>");
+//	scanf("%s", pc->data[pc->sz].addr);
+//
+//	pc->sz++;
+//	printf("增加成功\n");
+//}
+
+void check_capacity(contact* pc)
+{
+	if (pc->sz == pc->capacity)
+	{
+		PeoInfo* ptr = realloc((pc->data + inc_sz), sizeof(PeoInfo));
+		if (ptr != NULL)
+		{
+			pc->data = ptr;
+			pc->capacity += inc_sz;
+			printf("增容成功\n");
+		}
+		else
+		{
+			perror("addcontact");
+			return;
+		}
+	}
+}
+
+//动态版本增加联系人
+void addcontact(contact* pc)
+{
+	//考虑增容
+	check_capacity(pc);
+	//增加一个人的信息
+	printf("请输入名字:>");
+	scanf("%s", pc->data[pc->sz].name);//没有&因为name是字符串数组
+	printf("请输入年龄:>");
+	scanf("%d", &(pc->data[pc->sz].age));//有&因为age是变量
+	printf("请输入性别:>");
+	scanf("%s", pc->data[pc->sz].sex);
+	printf("请输入电话:>");
+	scanf("%s", pc->data[pc->sz].tele);
+	printf("请输入地址:>");
+	scanf("%s", pc->data[pc->sz].addr);
+
+	pc->sz++;
+	printf("增加成功\n");
+}
+
+//打印
+void printcontact(const contact* pc)
+{
+	int i = 0;
+	//打印标题
+	printf("%-20s\t%-5s\t%-5s\t%-12s\t%-20s\n", "名字", "年龄", "性别", "电话", "地址");
+	//打印数据
+	for ( i = 0; i < pc->sz; i++)
+	{
+		printf("%-20s\t%-5d\t%-5s\t%-12s\t%-20s\n", pc->data[i].name, pc->data[i].age, pc->data[i].sex, pc->data[i].tele, pc->data[i].addr);
+	}
+}
+
+//查找函数
+static int findbyname(contact* pc, char name[])
+{
+	int i = 0;
+	for ( i = 0; i < pc->sz; i++)
+	{
+		if (strcmp(pc->data[i].name, name) == 0)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+//删除
+void delcontact(contact* pc)
+{
+	char name[max_name] = { 0 };
+
+	if (pc->sz == 0)
+	{
+		printf("通讯录为空，无需删除\n");
+		return;
+	}
+	printf("请输入要删除人的名字\n");
+	scanf("%s", name);
+	//删除，查找要删除的人
+	//有/没有
+	int pos = findbyname(pc, name);
+	if (pos == -1)
+	{
+		printf("要删除的人不存在\n");
+		return;
+	}
+	//删除
+	int i = 0;
+	for ( i = 0; i < pc->sz; i++)//pc->sz-1因为是最后一个向前挪1位
+	{
+		pc->data[i] = pc->data[i + 1];
+	}
+	pc->sz--;
+	printf("删除成功\n");
+	
+}
+
+//查找
+void searchcontact(contact* pc)
+{
+	char name[max_name] = { 0 };
+	printf("请输入要查找人的名字\n");
+	scanf("%s", name);
+
+	int pos = findbyname(pc, name);
+	if (pos == -1)
+	{
+		printf("要查找的人不存在\n");
+		return;
+	}
+	else
+	{
+		printf("%-20s\t%-5s\t%-5s\t%-12s\t%-20s\n", "名字", "年龄", "性别", "电话", "地址");
+		//打印数据
+		printf("%-20s\t%-5d\t%-5s\t%-12s\t%-20s\n", pc->data[pos].name, pc->data[pos].age, pc->data[pos].sex, pc->data[pos].tele, pc->data[pos].addr);
+	}
+}
+
+//修改指定人
+void modiycontact(contact* pc)
+{
+	char name[max_name] = { 0 };
+	printf("请输入要修改人的名字\n");
+	scanf("%s", name);
+
+	int pos = findbyname(pc, name);
+	if (pos == -1)
+	{
+		printf("要修改的人不存在\n");
+		return;
+	}
+	else
+	{
+		printf("请输入名字:>");
+		scanf("%s", pc->data[pos].name);//没有&因为name是字符串数组
+		printf("请输入年龄:>");
+		scanf("%d", &(pc->data[pos].age));//有&因为age是变量
+		printf("请输入性别:>");
+		scanf("%s", pc->data[pos].sex);
+		printf("请输入电话:>");
+		scanf("%s", pc->data[pos].tele);
+		printf("请输入地址:>");
+		scanf("%s", pc->data[pos].addr);
+		printf("修改成功\n");
+	}
+}
+
+//销毁(释放)
+void destorycontact(contact* pc)
+{
+	free(pc->data);
+	pc->data = NULL;
+	pc->sz = 0;
+	pc->capacity = 0;
+}
+
+
+*******************************************************************************************day28 - game.c
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include"constant.h"
+
+//通讯录 - 静态版本
+//1.通讯录中能够存放1000个人的信息
+//没人包含信息
+// 名字、年龄、性别、电话、住址
+//2.增加人的信息
+//3.删除指定人的信息
+//4.修改指定人的信息
+//5.查找指定人的信息
+//6.排序通讯录的信息
+// 
+//contact.h
+// 类型定义，函数声明
+//test.c
+// 测试通讯录的模块
+//contact.c
+// 函数的实现
+//
+//结构体是直接可以赋值的
+//
+//版本2
+//动态内存增长版本
+// 通讯录初始化后，能存放3个人的信息
+// 当我们空间放满的时候，我们增加2个信息
+//
+//版本3
+//当通讯录退出的时候，把信息写到文件
+//当通讯录初始化的时候加载文件信息到通讯录中
+//
+
+void menu()
+{
+	printf("************************************\n");
+	printf("******1.add***********2.del*********\n");
+	printf("******3.search********4.modiy*******\n");
+	printf("******5.sort**********6.print*******\n");
+	printf("***************0.exit***************\n");
+	printf("************************************\n");
+
+}
+enum Option
+{
+	//qexit = 0,
+	add = 1,
+	del,
+	search,
+	modiy,
+	sort,
+	print
+};
+int main()
+{
+	int input = 0;
+	//创建通讯录
+	//PeoInfo date[Max];//创建1000个通讯录
+	//struct PeoInfo被typedef 从新定义了
+	//通讯录中当前总共有几个元素
+	//int sz = 0;//不用它了
+	contact con;//通讯录
+	//初始化通讯录
+	//给deta申请一块连续的空间在堆区上
+	//sz = 0
+	//capacity 初始化为当前的最大的容量
+	Initcontact(&con);
+	
+	do
+	{
+		menu();
+		printf("请选择\n");
+		scanf("%d", &input);
+		switch (input)
+		{
+		case add://增加人的信息
+			addcontact(&con);
+			break;
+		case del://删除人的信息
+			delcontact(&con);
+			break;
+		case search://查找
+			searchcontact(&con);
+			break;
+		case modiy://修改
+			modiycontact(&con);
+			break;
+		case sort://自己完善排序
+			break;
+		case print:
+			printcontact(&con);
+			break;
+		case 0:
+			//保存
+			savecontact(&con);
+			//销毁
+			destorycontact(&con);
+			printf("撒由那拉\n");
+			break;
+		default:
+			printf("错误了\n");
+			break;
+		}
+
+
+	} while (input);
+
+	return 0;
+}
+
