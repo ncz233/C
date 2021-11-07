@@ -1,0 +1,219 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include<stdio.h>
+
+//预处理
+//预定义符号介绍
+//__FILE__  //进行编译的源文件
+//__LINE__  //文件当前的行号
+//__DATE__  //文件别编译的日期
+//__TIME__  //文件被编译的时间
+//__STDC__  //如果编译器遵循ANSI C,其值为1，否则未定义
+//int main()
+//{
+//	//printf("%s\n", __FILE__);//代码所在的文件
+//	//printf("%d\n", __LINE__);//代码所在的行号
+//	//printf("%s\n", __DATE__);//代码所在的日期
+//	//printf("%s\n", __TIME__);//代码所在的时间
+//	//printf("%s\n", __FUNCTION__);//代码所在的函数名
+//
+//	//写文件
+//	int i = 0;
+//	FILE* pf = fopen("C:\\我的文件夹\\云备份\\OneDrive\\桌面\\学习\\新建文件夹\\test.txt", "a+");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 0;
+//	}
+//	for ( i = 0; i < 10; i++)
+//	{
+//		fprintf(pf, "%s %d %s %s %d\n", __FILE__, __LINE__, __DATE__, __TIME__, i);
+//	}
+//
+//	fclose(pf);
+//	pf == NULL;
+//
+//
+//	printf("%d\n", __STDC__);//当前编译器不支持__STDC__，也不支持ANSI C标准
+//	return 0;
+//}
+
+//#define 定义符号或定义宏的
+
+//举个列子
+// #define MAX 1000
+// #define reg register //为 register这个关键字，创建一个简短的名字
+// #define do_forever for(;;) //用更形象的符号来替换一种实现
+// #define CASE break;case //在写case语句的时候自动把break写上。
+// 如果定义的stff过长，可以分为几行写，除了最后一行外，每行的后面都加一个反斜杠(续行符)。
+//  #define DEBYG_PRINT prinft("file:%s\tline:%d\t \
+//   date:%s\ttime:%s\n" \
+//   __FILE__,__LINE__, \
+//   __DATE__,__TIME__ )
+// 
+//#define M 1000//定义符号
+//#define reg register//register的名字太长了改小点
+//#define do_forever for (;;)//定义循环
+
+//int main()
+//{
+//	int m = M;
+//	do_forever;//死循环for (;;);
+//	printf("%d\n", m);
+//
+//	return 0;
+//}
+
+//#define CASE break;case
+//#define M 1000//#define定义的时候最好不要加分号(;)容易出错，而且没用
+//
+//int main()
+//{
+//	int n = 0;
+//
+//	switch (n)
+//	{
+//	case 1:
+//	CASE 2://替换后break;case 2:
+//	CASE 3:
+//
+//	}
+//
+//	int a = 10;
+//	int b = 0;
+//	if (a>10)
+//	{
+//		b = M;
+//	}
+//	else
+//	{
+//		b = -M;
+//	}
+//
+//	return 0;
+//}
+
+//#define 定义宏
+//允许把参数替换到文本中，这种实现通常称为宏(macro)或定义宏(defube macro)
+// 声明方式
+// #define name( parament-list ) suff
+// parament-list参数列表 可以替换到 宏的suff中
+// 注意
+// name必须跟后面的括号紧紧挨着，不能加空格
+// 如果两者之间有任何空白存在，参数列表就会被解释为stuff的一部分
+//
+
+//尽量加上括号别吝啬
+//#define SOUARE(X) ((X)*(X))//最好括起来，严谨
+//#define DOUBLE(X) ((X)+(X))//同上一劳永逸
+//
+//int main()
+//{
+//	//printf("%d\n", SOUARE(3));
+//	////被替换成
+//	//printf("%d\n", 3*3);
+//
+//	//printf("%d\n", SOUARE(3+1));//7,不是16，括起来是16了
+//	//宏时替换的不是先计算的，是替换进去在计算。参数不经过任何运算直接传进去
+//
+//	printf("%d\n", 10*DOUBLE(4));//44,不是80，括号括起来是80不是44
+//	//被替换成
+//	//printf("%d\n", 10 * (4) + (4));
+//
+//
+//	return 0;
+//}
+
+//#define 替换规则
+// 1.调用宏时，首先对参数进行检查，看看是否包含任何由#define定义的符号，如果是，他们首先被替换
+// 2.替换文本随后被插入到程序中原来文本的位置，对于宏，参数名被他们的值替换
+// 3.最后，再次对结果文件进行扫描，看着它是否包含任何由#define定义的符号。如果是，就重复上述处理过程
+//
+//注意
+// 函数参数和#define定义中可以出现其他#defien定义的变量，但对于宏，不能时出现递归
+// 当预处理器搜索#define定义的符号的时候，字符串常量的内容并不被搜索
+//
+//#define M 100
+//#define MAX(X,Y) ((X)>(Y)?(X):(Y))
+//int main()
+//{
+//	int max = MAX(101, M);
+//	//我们要先把参数替换了M替换成100，然后在进行MAX的替换，扫描是否还有其他的#define的，如果有重复之前的步骤
+//	printf("M = %d", M);//"M = %d"不会被搜素到
+//
+//	return 0;
+//}
+
+//#和## - 只能在宏里可以用
+//可以把参数插入到字符串中
+//
+
+//#
+//void print(int x)
+//{
+//	printf("the value of x is %d\n", x);//函数方式完成很难
+//}
+//int main()
+//{
+//	//printf("hello world\n");
+//	//printf("hello " "world");
+//
+//	int a = 10;
+//	print(a);
+//	//打印the value of a is 10
+//	int b = 20;
+//	print(b);
+//	//打印the value of a is 20
+//	int c = 30;
+//	print(c);
+//	//打印the value of a is 30
+//
+//
+//	return 0;
+//}
+
+//加上#号，就是不会把这个参数替换了，而是变成这个参数随对应的一个字符串
+//#define PRINT(X,FORMAT) printf("the value of "#X" is" FORMAT"\n",X);
+//int main()
+//{
+//	//printf("hello world\n");
+//	//printf("hello " "world");
+//
+//	int a = 10;
+//	PRINT(a,"%d");
+//	//替换成
+//	//printf("the value of ""a"" is %d\n", a);
+//	//打印the value of a is 10
+//	int b = 20;
+//	PRINT(b,"%d");
+//	//替换成
+//	//printf("the value of ""b"" is %d\n", b);
+//	//打印the value of a is 20
+//	int c = 30;
+//	PRINT(c,"%d");
+//	//替换成
+//	//printf("the value of ""c"" is %d\n", c);
+//	//打印the value of a is 30
+//	float d = 5.5f;
+//	PRINT(d,"%f");
+//	//替换成
+//	//printf("the value of ""d"" is ""%f""\n", d);
+//
+//	return 0;
+//}
+
+//##
+//把两边的符号连成一个符号
+//它允许宏定义从分离的文本片段创建标识符
+//#define CAT(x,y) x##y
+//int main()
+//{
+//	int class101 = 100;
+//	printf("%d\n", CAT(class, 101));//两个符号合成一个符号，多个符号都可以
+//	//替换成
+//	printf("%d\n", class101);
+//
+//	return 0;
+//}
+
+//带有副作用的宏参数
