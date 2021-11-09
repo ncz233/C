@@ -1,0 +1,246 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include<stdio.h>
+#include<stdlib.h>
+#include<memory.h>
+#include<assert.h>
+#include<ctype.h>
+#include<limits.h>
+//jojo这是我最后的练习了
+
+//#pragma pack(4)
+//struct A
+//{
+//	int i;//0-3
+//	short s;//4-5
+//	int j;//8-11
+//	char ch;//12
+//};//0 - 12 = 13个字节
+//
+//struct B
+//{
+//	int a;//0-3
+//	short b;//4-5
+//	char c;//6
+//	int d;//8-11
+//};//0 - 11 = 12个字节
+//
+//#pragma pack()
+//
+//int main()
+//{
+//	printf("%d\n", sizeof(struct A));//16
+//	printf("%d\n", sizeof(struct B));//12
+//
+//	return 0;
+//}
+
+//#pragma pack(4)
+//struct tag1
+//{
+//	short a;//1
+//	char b;//2
+//	long c;//8
+//	long d;//11
+//};//12
+//struct tag2
+//{
+//	long b;//3
+//	short c;//5
+//	char d;//6
+//	long a;//11
+//};//12
+//struct tag3
+//{
+//	short c;//1
+//	long b;//7
+//	char d;//8
+//	long a;//15
+//};//16
+//
+//int main()
+//{
+//	printf("%d\n", sizeof(struct tag1));
+//	printf("%d\n", sizeof(struct tag2));
+//	printf("%d\n", sizeof(struct tag3));
+//
+//	return 0;
+//}
+
+//#define MAX 2+3
+//struct A
+//{
+//	unsigned char a : 4;
+//	unsigned char b : 2;
+//	unsigned char c;
+//	unsigned char d : 1;
+//}*ps;
+//
+//int main()
+//{
+//	struct A* pps = (struct A*)malloc(sizeof(struct A) * MAX);
+//	printf("%d\n",sizeof(*pps));
+//
+//	return 0;
+//}
+
+//int main()
+//{
+//	unsigned char puc[4];
+//	struct tag
+//	{
+//		unsigned char ucp1;
+//		unsigned char ucp2 : 1;
+//		unsigned char ucp3 : 2;
+//		unsigned char ucp4 : 3;
+//	}*ps;
+//	ps = (struct tag*)puc;
+//	memset(puc, 0, 4);//内存设置
+//	ps->ucp1 = 2;
+//	ps->ucp2 = 3;
+//	ps->ucp3 = 4;
+//	ps->ucp4 = 5;
+//	printf("%02x %02x %02x %02x ", puc[0], puc[1], puc[2], puc[3]);
+//	//0x是16进制，02x是输出两位16进制的，不够两位补0，4个二进制能输出一个16进制位
+//	return 0;
+//}
+
+//union Un
+//{
+//	short s[7];//short=2，14
+//	int n;//int=4，
+//	//取最大的类型是4，也就是对齐数是4的倍数
+//	//16
+//};
+//int main()
+//{
+//	printf("%d\n", sizeof(union Un));
+//	return 0;
+//}
+
+//int main()
+//{
+//	union 
+//	{
+//		short k;
+//		char i[2];
+//	}*s,a;
+//	s = &a;
+//	s->i[0] = 0x39;
+//	s->i[1] = 0x38;
+//	printf("%x\n", a.k);
+//	//3839,小端存储低位低地址，高位高地址
+//	return 0;
+//}
+
+//枚举简单不写了
+
+//一个简单的结构体的大小，就是匿名结构体重新命名了，重新命名的匿名结构体还是匿名结构体
+//typedef struct 
+//{
+//	int a;//3
+//	char b;//4
+//	short c;//7
+//	short d;//9
+//}sb;//12
+//
+//int main()
+//{
+//	printf("%d\n", sizeof(sb));
+//
+//	return 0;
+//}
+
+//atol - 把字符串转成整型数的一个函数
+//long int atol ( const char * str );
+//指向的字符串
+//int main()
+//{
+//	char* p = "-1234";
+//	int ret = atoi(p);
+//	printf("%d\n", ret);
+//
+//	return 0;
+//}
+
+//实现atol
+enum State
+{
+	invlid,
+	vlid
+};
+//state 记录的是my_atoi返回的值是合法转化的值，还是非法的状态
+enum State state = invlid;
+
+int my_atoi(const char* s)
+{
+	int flag = 1;
+	//assert(NULL != s);
+	//空指针
+	if (s == NULL)
+	{
+		return 0;
+	}
+	//空字符串
+	if ("\0" == *s)
+	{
+		return 0;
+	}
+	//跳过空白字符
+	while (isspace(*s))//isspace检测跳过" "空格
+	{
+		s++;
+	}
+	//+/-
+	if ('+' == *s)
+	{
+		flag = 1;
+		s++;
+	}
+	else if ('-' == *s)
+	{
+		flag = -1;
+		s++;
+	}
+	//处理数字字符的转换
+	long long n = 0;
+	while (isdigit(*s))
+	{
+		n = n * 10 + flag * (*s - '0');
+		if (n>INT_MAX||n<INT_MIN)
+		{
+			return n;
+		}
+		s++;
+		if ('\0' == *s)
+		{
+			state = vlid;
+			return (int)n;
+		}
+		else
+		{
+			//非数字字符
+			return (int)n;
+		}
+	}
+
+}
+int main()
+{
+	//空指针
+	// 空字符串
+	// 遇到了非数字字符
+	// 数值超级大
+	//
+	const char* p = "-1234";
+	int ret = my_atoi(p);
+	if (state == vlid)
+	{
+		printf("%d\n", ret);
+	}
+	else
+	{
+		printf("非法 == %d\n", ret);
+	}
+
+	return 0;
+}
